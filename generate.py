@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('templates'))
 
 from models import *
+from config import *
 import utils
 
 def generate_posts(posts, pages):
@@ -20,7 +21,7 @@ def generate_posts(posts, pages):
 
     for post in posts:
         template = env.get_template('post.html')
-        html = template.render({'post': post, 'pages': pages})
+        html = template.render({'post': post, 'pages': pages, 'site_title': site_title})
         f = open('site/posts/' + post.slug + '.html', 'w')
         print(html, file=f)
         f.close()
@@ -31,7 +32,7 @@ def generate_pages(pages, posts):
 
     for page in pages:
         template = env.get_template('page.html')
-        html = template.render({'page': page, 'pages': pages, 'posts': posts})
+        html = template.render({'page': page, 'pages': pages, 'posts': posts, 'site_title': site_title})
         target = os.path.join('site', page.path)
         if os.path.exists(target):
             os.remove(target)
@@ -70,8 +71,8 @@ def read_pages():
         split = post.split('\n')
         title = split[0].strip()
         body = markdown.markdown('\n'.join(split[1:]).strip())
-        path = postnames[i]
-        post_objects.append(Page(title, body, path))
+        z_index, path = postnames[i].split('_')
+        post_objects.append(Page(title, body, path, int(z_index)))
     return post_objects
 
 def main():

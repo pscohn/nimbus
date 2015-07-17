@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{{ page.title }}{% endblock %}
 {% block content %}
-<h1>{{ page.title }}</h1>
-<p>{{ page.body }}</p>
-
-<h2>Posts</h2>
-<ul>
+<div class="post-links">
 {% for post in posts %}
-    <li><a href="/posts/{{ post.slug }}.html">{{ post.title }}</a>
+    <h3><a href="/posts/{{ post.slug }}.html">{{ post.title }}</a></h3>
+    <div class="date">{{ post.get_pretty_date() }}</div>
 {% endfor %}
-</ul>
+</div>
 {% endblock %}
