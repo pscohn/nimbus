@@ -31,7 +31,7 @@ def generate_pages(pages, posts):
 
     for page in pages:
         template = env.get_template('page.html')
-        html = template.render({'page': page, 'posts': posts})
+        html = template.render({'page': page, 'pages': pages, 'posts': posts})
         target = os.path.join('site', page.path)
         if os.path.exists(target):
             os.remove(target)
