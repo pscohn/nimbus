@@ -2,8 +2,9 @@
 import os
 import datetime
 import re
-
-var_regex = re.compile(r'{{ ?\S+ ?}}')
+import markdown
+from jinja2 import Environment, FileSystemLoader
+env = Environment(loader=FileSystemLoader('templates'))
 
 class Post:
     def __init__(self, title, slug, date, body):
@@ -23,15 +24,7 @@ def remove_existing():
         os.remove('site/posts/' + post)
 
 def render(template_name, context):
-    html = open('templates/' + template_name).read()
-    for f in re.finditer(var_regex, html):
-        varname = f.group().strip(' {}')
-        if '.' in varname:
-            elem = varname.split('.')
-            html = html.replace(f.group(), getattr(context[elem[0]], elem[1]))
-        else:
-            html = html.replace(f.group(), getattr(context[elem]))
-    return html
+    return template.render(context)
 
 def generate_html(posts):
     if 'site' not in os.listdir():
@@ -43,7 +36,8 @@ def generate_html(posts):
         os.mkdir('site/posts')
 
     for post in posts:
-        html = render('post.html', {'post': post})
+        template = env.get_template('post.html')
+        html = template.render({'post': post})
         f = open('site/posts/' + post.slug + '.html', 'w')
         print(html, file=f)
         f.close()
@@ -59,7 +53,7 @@ def read_posts():
     for i, post in enumerate(posts):
         split = post.split('\n')
         title = split[0].strip()
-        body = '\n'.join(split[1:]).strip()
+        body = markdown.markdown('\n'.join(split[1:]).strip())
         namesplit = postnames[i].split('-')
         year = namesplit[0]
         month = namesplit[1]
