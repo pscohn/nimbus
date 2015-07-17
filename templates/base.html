@@ -20,8 +20,8 @@
                 <div class="col-md-12 col-sm-12">
                     <ul>
                         <li><a{% if index is defined %} class="active"{% endif %} href="/">Home</a></li>
-                    {% for p in pages %}
-                        <li><a{% if page and page.path == p.path %} class="active"{% endif %} href="/{{ p.path }}">{{ p.title }}</a>
+                    {% for m in menu %}
+                        <li><a{% if page and '/' + page.path == m.1 %} class="active"{% endif %} href="{{ m.1 }}">{{ m.0 }}</a>
                     {% endfor %}
                     </ul>
                 </div>

@@ -22,7 +22,7 @@ def generate_posts(posts, pages):
 
     for post in posts:
         template = env.get_template('post.html')
-        html = template.render({'post': post, 'pages': pages, 'site_title': config.site_title})
+        html = template.render({'menu': config.menu, 'post': post, 'pages': pages, 'site_title': config.site_title})
         while os.path.exists(os.path.join('site/posts', post.slug + '.html')):
             post.slug = post.slug + '-%s%s%s' % (post.date.year, post.date.month, post.date.day)
         f = open('site/posts/' + post.slug + '.html', 'w')
@@ -35,7 +35,7 @@ def generate_pages(pages, posts):
 
     for page in pages:
         template = env.get_template('page.html')
-        html = template.render({'page': page, 'pages': pages, 'posts': posts, 'site_title': config.site_title})
+        html = template.render({'menu': config.menu, 'page': page, 'pages': pages, 'posts': posts, 'site_title': config.site_title})
         target = os.path.join('site', page.path)
         if os.path.exists(target):
             os.remove(target)
@@ -51,6 +51,7 @@ def generate_index(pages, posts, index):
         html = template.render({'page': index, 
                                 'pages': pages,
                                 'posts': posts[i*config.paginate_by:(i+1)*config.paginate_by],
+                                'menu': config.menu,
                                 'site_title': config.site_title,
                                 'index': i+1, 
                                 'max_pages': max_pages
@@ -96,8 +97,8 @@ def read_pages():
         split = post.split('\n')
         title = split[0].strip()
         body = markdown.markdown('\n'.join(split[1:]).strip())
-        z_index, path = postnames[i].split('_')
-        post_objects.append(Page(title, body, path, int(z_index)))
+        path = postnames[i]
+        post_objects.append(Page(title, body, path))
     return post_objects
 
 def read_index():
@@ -106,9 +107,8 @@ def read_index():
     split = post.split('\n')
     title = split[0].strip()
     body = markdown.markdown('\n'.join(split[1:]).strip())
-    z_index = 0
     path = 'index.html'
-    return Page(title, body, path, z_index)
+    return Page(title, body, path)
 
 def main():
     posts = read_posts()[::-1]
