@@ -9,7 +9,7 @@ env = Environment(loader=FileSystemLoader('templates'))
 from models import *
 import utils
 
-def generate_posts(posts):
+def generate_posts(posts, pages):
     if 'site' not in os.listdir():
         os.mkdir('site')
 
@@ -20,7 +20,7 @@ def generate_posts(posts):
 
     for post in posts:
         template = env.get_template('post.html')
-        html = template.render({'post': post})
+        html = template.render({'post': post, 'pages': pages})
         f = open('site/posts/' + post.slug + '.html', 'w')
         print(html, file=f)
         f.close()
@@ -77,7 +77,7 @@ def read_pages():
 def main():
     posts = read_posts()
     pages = read_pages()
-    generate_posts(posts)
+    generate_posts(posts, pages)
     generate_pages(pages, posts)
     utils.printnum(len(posts), 'post')
     utils.printnum(len(pages), 'page')

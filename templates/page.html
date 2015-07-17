@@ -4,17 +4,10 @@
 <h1>{{ page.title }}</h1>
 <p>{{ page.body }}</p>
 
-<h2>Pages</h2>
-<ul>
-{% for p in pages %}
-    <li><a href="{{ p.path }}">{{ page.title }}</a>
-{% endfor %}
-</ul>
-
 <h2>Posts</h2>
 <ul>
 {% for post in posts %}
-    <li><a href="posts/{{ post.slug }}.html">{{ post.title }}</a>
+    <li><a href="/posts/{{ post.slug }}.html">{{ post.title }}</a>
 {% endfor %}
 </ul>
 {% endblock %}
