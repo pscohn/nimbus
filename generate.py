@@ -23,6 +23,8 @@ def generate_posts(posts, pages):
     for post in posts:
         template = env.get_template('post.html')
         html = template.render({'post': post, 'pages': pages, 'site_title': config.site_title})
+        while os.path.exists(os.path.join('site/posts', post.slug + '.html')):
+            post.slug = post.slug + '-%s%s%s' % (post.date.year, post.date.month, post.date.day)
         f = open('site/posts/' + post.slug + '.html', 'w')
         print(html, file=f)
         f.close()
