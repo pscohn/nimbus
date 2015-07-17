@@ -5,51 +5,7 @@
 <meta charset="utf-8" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <style>
-* {
-    font-family: Palatino, Georgia, serif;
-}
-
-p, a, ul {
-    font-size: 1.1em;
-}
-
-ul li {
-    list-style: none;
-}
-
-.nav {
-    border-top: 1px solid #EAEAEA;
-    border-bottom: 1px solid #EAEAEA;
-    background: #FBFBFB;
-}
-
-a, a:hover {
-    color: #333;
-}
-
-.nav li {
-    float: left;
-    list-style: none;
-    margin-right: 5px;
-}
-
-.active {
-    font-weight: bold;
-}
-
-.col-centered {
-    float: none;
-    margin: 0 auto;
-}
-
-.post-links h3 {
-    margin-bottom: 0;
-}
-
-.date {
-    color: #999;
-}
-
+{% include 'styles.html' %}
 </style>
 <body>
 <div class="container">
@@ -63,6 +19,7 @@ a, a:hover {
             <div class="row nav">
                 <div class="col-md-12 col-sm-12">
                     <ul>
+                        <li><a{% if index is defined %} class="active"{% endif %} href="/">Home</a></li>
                     {% for p in pages %}
                         <li><a{% if page and page.path == p.path %} class="active"{% endif %} href="/{{ p.path }}">{{ p.title }}</a>
                     {% endfor %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block content %}
+<div class="post-links">
+{% for post in posts %}
+    <h3><a href="/posts/{{ post.slug }}.html">{{ post.title }}</a></h3>
+    <div class="date">{{ post.get_pretty_date() }}</div>
+{% endfor %}
+</div>
+<div class="pagination">
+    {% if index == 1 %}
+        <a href="/index_2.html">Next</a>
+    {% elif index == 2 %}
+        <a href="/">Previous</a>
+        {% if max_pages > 2 %}
+            <a href="/index_3.html">Next</a>
+        {% endif %}
+    {% elif index < max_pages %}
+        <a href="/index_{{ index - 1}}.html">Previous</a>
+        <a href="/index_{{ index + 1}}.html">Previous</a>
+    {% else %}
+        <a href="/index_{{ index - 1}}.html">Previous</a>
+    {% endif %}
+</div>
+{% endblock %}
