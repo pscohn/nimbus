@@ -111,7 +111,7 @@ def read_index():
     return Page(title, body, path, z_index)
 
 def main():
-    posts = read_posts()
+    posts = read_posts()[::-1]
     pages = read_pages()
     index = read_index()
     generate_posts(posts, pages)
