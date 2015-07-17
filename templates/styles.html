@@ -10,24 +10,38 @@ ul li {
     list-style: none;
 }
 
-.nav {
-    border-top: 1px solid #EAEAEA;
-    border-bottom: 1px solid #EAEAEA;
-    background: #FBFBFB;
-}
-
 a, a:hover {
     color: #333;
 }
 
-.nav li {
-    float: left;
-    list-style: none;
-    margin-right: 5px;
-}
-
 .active {
     font-weight: bold;
+}
+
+.site-title {
+    text-transform: uppercase;
+}
+
+.nav {
+    border-top: 1px solid #EAEAEA;
+    border-bottom: 1px solid #EAEAEA;
+    background: #FBFBFB;
+    text-align: center;
+}
+
+.nav ul {
+    overflow: auto;
+    margin-left: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.nav li {
+    display: inline-block;
+    list-style: none;
+    margin-right: 20px;
+    line-height: 2em;
+    text-transform: uppercase;
 }
 
 .col-centered {
@@ -45,4 +59,8 @@ a, a:hover {
 
 .post-title {
     margin-bottom: 0;
+}
+
+.page {
+    margin-top: 2em;
 }
