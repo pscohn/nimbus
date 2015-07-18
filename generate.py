@@ -4,6 +4,7 @@ import datetime
 import re
 import math
 import markdown
+from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('templates'))
 
@@ -28,6 +29,26 @@ def generate_posts(posts, pages):
         f = open('site/posts/' + post.slug + '.html', 'w')
         print(html, file=f)
         f.close()
+
+def generate_feed(posts):
+    author = {'name': config.author, 'email': config.email}
+    fg = FeedGenerator()
+    fg.id('http://%s/rss.xml' % config.domain)
+    fg.title('%s RSS Feed' % config.domain)
+    fg.author(author)
+    fg.link(href='http://%s' % config.domain, rel='alternate')
+    fg.language('en')
+    fg.description('%s RSS Feed' % config.domain)
+
+    for post in posts[:10]:
+        fe = fg.add_entry()
+        fe.id('http://%s/posts/%s.html' % (config.domain, post.slug))
+        fe.title(post.title)
+        fe.content(content=post.body, type='html')
+        fe.author(author)
+
+    rssfeed = fg.rss_str(pretty=True)
+    fg.rss_file('site/rss.xml')
 
 def generate_pages(pages, posts):
     if 'site' not in os.listdir():
@@ -117,6 +138,7 @@ def main():
     generate_posts(posts, pages)
     generate_pages(pages, posts)
     generate_index(pages, posts, index)
+    generate_feed(posts)
     utils.printnum(len(posts), 'post')
     utils.printnum(len(pages), 'page')
 
