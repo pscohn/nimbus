@@ -1,34 +1,14 @@
 #!/usr/bin/env python3
 import os
-import datetime
-import re
 import math
-import markdown
 from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('templates'))
 
 from models import *
+import reader
 import config
 import utils
-
-def generate_posts(posts, pages):
-    if 'site' not in os.listdir():
-        os.mkdir('site')
-
-    if 'posts' in os.listdir('site'):
-        utils.remove_existing()
-    else:
-        os.mkdir('site/posts')
-
-    for post in posts:
-        template = env.get_template('post.html')
-        html = template.render({'menu': config.menu, 'post': post, 'pages': pages, 'site_title': config.site_title})
-        while os.path.exists(os.path.join('site/posts', post.slug + '.html')):
-            post.slug = post.slug + '-%s%s%s' % (post.date.year, post.date.month, post.date.day)
-        f = open('site/posts/' + post.slug + '.html', 'w')
-        print(html, file=f)
-        f.close()
 
 def generate_feed(posts):
     author = {'name': config.author, 'email': config.email}
@@ -49,6 +29,24 @@ def generate_feed(posts):
 
     rssfeed = fg.rss_str(pretty=True)
     fg.rss_file('site/rss.xml')
+
+def generate_posts(posts, pages):
+    if 'site' not in os.listdir():
+        os.mkdir('site')
+
+    if 'posts' in os.listdir('site'):
+        utils.remove_existing()
+    else:
+        os.mkdir('site/posts')
+
+    for post in posts:
+        template = env.get_template('post.html')
+        html = template.render({'menu': config.menu, 'post': post, 'pages': pages, 'site_title': config.site_title})
+        while os.path.exists(os.path.join('site/posts', post.slug + '.html')):
+            post.slug = post.slug + '-%s%s%s' % (post.date.year, post.date.month, post.date.day)
+        f = open('site/posts/' + post.slug + '.html', 'w')
+        print(html, file=f)
+        f.close()
 
 def generate_pages(pages, posts):
     if 'site' not in os.listdir():
@@ -87,54 +85,10 @@ def generate_index(pages, posts, index):
         print(html, file=f)
         f.close()
 
-def read_posts():
-    postnames = []
-    posts = []
-    for post in os.listdir('input'):
-        if post[0] != '.' and post[-5:] == '.html':
-            postnames.append(post)
-            posts.append(open('input/' + post).read())
-    post_objects = []
-    for i, post in enumerate(posts):
-        split = post.split('\n')
-        title = split[0].strip()
-        body = markdown.markdown('\n'.join(split[1:]).strip())
-        namesplit = postnames[i].split('-')
-        year, month, day = namesplit[:3]
-        slug = '-'.join(namesplit[3:])[:-5] # strip .html from end
-        date = datetime.date(int(year), int(month), int(day))
-        post_objects.append(Post(title, slug, date, body))
-    return post_objects
-
-def read_pages():
-    postnames = []
-    posts = []
-    for post in os.listdir('pages'):
-        if post[0] != '.' and post[-5:] == '.html' and post != 'index.html':
-            postnames.append(post)
-            posts.append(open('pages/' + post).read())
-    post_objects = []
-    for i, post in enumerate(posts):
-        split = post.split('\n')
-        title = split[0].strip()
-        body = markdown.markdown('\n'.join(split[1:]).strip())
-        path = postnames[i]
-        post_objects.append(Page(title, body, path))
-    return post_objects
-
-def read_index():
-    name = 'index.html'
-    post = open('pages/' + name).read()
-    split = post.split('\n')
-    title = split[0].strip()
-    body = markdown.markdown('\n'.join(split[1:]).strip())
-    path = 'index.html'
-    return Page(title, body, path)
-
 def main():
-    posts = read_posts()[::-1]
-    pages = read_pages()
-    index = read_index()
+    posts = reader.read_posts()[::-1]
+    pages = reader.read_pages()
+    index = reader.read_index()
     generate_posts(posts, pages)
     generate_pages(pages, posts)
     generate_index(pages, posts, index)
