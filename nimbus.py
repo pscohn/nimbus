@@ -53,8 +53,8 @@ def generate_posts(posts, pages):
         f.close()
 
 def generate_pages(pages, posts):
-    if 'site' not in os.listdir():
-        os.mkdir('site')
+    if not os.path.exists(config['default']['site_path']):
+        os.mkdir(config['default']['site_path'])
 
     for page in pages:
         template = env.get_template('page.html')
