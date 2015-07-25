@@ -1,7 +1,9 @@
-# static-blog
+# nimbus
 
 ## todos
 
-- rss & og meta
+- tests
+- documentation
+- og meta
 - auto-regen when post updates
 - refactor & more modular, user friendly
