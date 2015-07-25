@@ -1,9 +1,13 @@
 # nimbus
 
+Nimbus is a simple static blog generator that supports posts, pages, index pagination, and RSS.
+
 ## quick start
 
 ```git clone https://github.com/pscohn/nimbus```
 ```cd nimbus/example```
+
+Nimbus looks in the current directory for a nimbus.ini to generate the site with your settings, but you may move the example folder to any location and update the paths accordingly in the nimbus.ini.
 
 Edit nimbus.ini to your liking:
 
@@ -27,19 +31,24 @@ Edit nimbus.ini to your liking:
 
 - Name file with this format in posts_path: YYYY-MM-DD-post-slug.html
 - On first line: name of the post and a newline
-- Beginning on second or third line: post content in Markdown
+- Beginning on second or later: post content in Markdown
 
 ###Creating Pages:
 
 - Name file anything you like in pages_path
 - On first line: name of the page and a newline
-- Beginning on second or third line: page content in Markdown
+- Beginning on second or later: page content in Markdown
+
+###Generate and Run Dev Server
 
 ```python ../nimbus.py generate```
 ```python ../nimbus.py run```
 
+And visit http://127.0.0.1:8080 to view your site.
+
 ## todos
 
+- categories
 - tests
 - documentation
 - og meta
