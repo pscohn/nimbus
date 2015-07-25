@@ -44,7 +44,7 @@ def read_pages(path):
 
     post_objects = []
     for i, post in enumerate(posts):
-        path = postnames[i]
+        path = postnames[i][:-3] + '.html'
         title, body = parse_content(post)
         post_objects.append(Page(title, body, path))
     return post_objects
