@@ -4,7 +4,7 @@ import sys
 import math
 from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
-env = Environment(loader=FileSystemLoader('templates'))
+env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
 
 from models import *
 import reader
@@ -12,7 +12,7 @@ import utils
 
 import configparser
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(os.path.join(os.getcwd(), 'nimbus.ini'))
 
 def generate_feed(posts):
     author = {'name': config['default']['author'], 'email': config['default']['email']}
