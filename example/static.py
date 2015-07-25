@@ -3,8 +3,9 @@ author = 'Paul Cohn'
 domain = 'paulcohn.net'
 email = 'pscohn@gmail.com'
 paginate_by = 5
-pages_path = 'pages'
-posts_path = 'input'
+pages_path = '/Users/paulcohn/Dropbox/Code/python/static-blog/example/pages'
+posts_path = '/Users/paulcohn/Dropbox/Code/python/static-blog/example/input'
+site_path = '/Users/paulcohn/Dropbox/Code/python/static-blog/example/site'
 menu = (('About', '/about.html'),
         ('GitHub', 'http://github.com/pscohn'),
         ('Email', 'mailto:pscohn@gmail.com'),

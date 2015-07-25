@@ -21,7 +21,7 @@
                     <ul>
                         <li><a{% if index is defined %} class="active"{% endif %} href="/">Home</a></li>
                     {% for m in menu %}
-                        <li><a{% if page and '/' + page.path == m.1 %} class="active"{% endif %} href="{{ m.1 }}">{{ m.0 }}</a>
+                        <li><a{% if page and '/' + page.path == menu.get(m) %} class="active"{% endif %} href="{{ menu.get(m) }}">{{ m }}</a>
                     {% endfor %}
                     </ul>
                 </div>

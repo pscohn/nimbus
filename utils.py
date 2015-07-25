@@ -6,9 +6,9 @@ def fread(path):
     f.close()
     return content
 
-def remove_existing():
-    for post in os.listdir('site/posts'):
-        os.remove('site/posts/' + post)
+def remove_existing(path):
+    for post in os.listdir(path):
+        os.remove(os.path.join(path, post))
 
 def printnum(num, noun):
     if num == 1:

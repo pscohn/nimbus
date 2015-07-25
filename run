@@ -1,1 +1,1 @@
-python generate.py && pushd site; python -m http.server 8080; popd
+python generate.py generate && pushd site; python -m http.server 8080; popd
