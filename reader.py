@@ -11,14 +11,14 @@ def read(folder):
     filenames = []
     contents = []
     for filename in os.listdir(folder):
-        if filename[0] != '.' and filename[-5:] == '.html' and filename != 'index.html':
+        if filename[0] != '.' and filename[-3:] == '.md' and filename != 'index.md':
             filenames.append(filename)
             contents.append(open('%s/' % folder + filename).read())
     return filenames, contents
 
 def parse_filename(filename):
     split = filename.split('-')
-    slug = '-'.join(split[3:])[:-5] # strip .html from end
+    slug = '-'.join(split[3:])[:-3] # strip .html from end
     year, month, day = split[:3]
     date = datetime.date(int(year), int(month), int(day))
     return slug, date
@@ -50,7 +50,7 @@ def read_pages(path):
     return post_objects
 
 def read_index(pages_path):
-    name = 'index.html'
+    name = 'index.md'
     post = open('%s/' % pages_path + name).read()
     split = post.split('\n')
     title = split[0].strip()

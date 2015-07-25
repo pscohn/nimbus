@@ -4,9 +4,13 @@ Nimbus is a simple static blog generator that supports posts and pages using Mar
 
 ## quick start
 
-```git clone https://github.com/pscohn/nimbus```
+```git clone https://github.com/pscohn/nimbus && cd nimbus```
 
-```cd nimbus/example```
+```virtualenv venv && source venv/bin/activate.```
+
+```pip install -r requirements.txt```
+
+```cd example```
 
 Nimbus looks in the current directory for a nimbus.ini to generate the site with your settings, but you may move the example folder to any location and update the paths accordingly in the nimbus.ini.
 
@@ -30,7 +34,7 @@ Edit nimbus.ini to your liking:
 
 ###Creating Posts:
 
-- Name file with this format in posts_path: YYYY-MM-DD-post-slug.html
+- Name file with this format in posts_path: YYYY-MM-DD-post-slug.md
 - On first line: name of the post and a newline
 - Beginning on second or later: post content in Markdown
 
@@ -40,7 +44,17 @@ Edit nimbus.ini to your liking:
 - On first line: name of the page and a newline
 - Beginning on second or later: page content in Markdown
 
+###Hiding Posts/Pages
+
+You can hide a post simply by making it a dotfile:
+
+```mv post.md .post.md```
+
+You may hide pages in the same way, but you'll have to delete them manually from the site_path directory if they're already in there.
+
 ###Generate and Run Dev Server
+
+Update `../nimbus.py` accordingly if you're using from a folder other than `nimbus/example`.
 
 ```python ../nimbus.py generate```
 
@@ -55,6 +69,5 @@ And visit http://127.0.0.1:8080 to view your site.
 - categories
 - tests
 - documentation
+- better distribution
 - og meta
-- auto-regen when post updates
-- refactor & more modular, user friendly
