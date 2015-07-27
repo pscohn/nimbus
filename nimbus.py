@@ -102,29 +102,31 @@ def generate():
     utils.printnum(len(pages), 'page')
 
 def init():
-    folder = os.environ['PWD']
-    if os.path.exists(os.path.join(folder, '.static.py')):
-        print('project already exists')
+    folder = os.getcwd()
+    if os.path.exists(os.path.join(folder, 'nimbus.conf')):
+        print('nimbus.conf already exists')
         return
 
     config = '''\
-site_title = 'Site Title'
-author = 'Your Name'
-domain = 'yourdomain.com'
-email = 'your@email.com'
+[default]
+site_title = Your Site Name
+author = Your Name
+domain = yourdomain.com
+email = your@email.com
 paginate_by = 5
-pages_path = 'pages'
-posts_path = 'input'
-site_path = 'site'
-menu = (('About', '/about.html'),
-        ('GitHub', 'http://github.com/pscohn'),
-        ('Email', 'mailto:pscohn@gmail.com'),
-    )
-    '''
+pages_path = /path/to/pages
+posts_path = /path/to/posts
+site_path = /path/to/site/target
 
-    f = open('.static.py', 'w')
+[menu]
+About = /about.html
+GitHub = http://github.com/pscohn
+Email = mailto:pscohn@gmail.com'''
+
+    f = open(os.path.join(folder, 'nimbus.conf'), 'w')
     print(config, file=f)
     f.close()
+    print('created nimbus.conf in this directory')
 
 import http.server
 import socketserver

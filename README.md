@@ -12,9 +12,9 @@ Nimbus is a simple static blog generator that supports posts and pages using Mar
 
 ```cd example```
 
-Nimbus looks in the current directory for a nimbus.ini to generate the site with your settings, but you may move the example folder to any location and update the paths accordingly in the nimbus.ini.
+Nimbus looks in the current directory for a nimbus.conf to generate the site with your settings, but you may move the example folder to any location and update the paths accordingly in the nimbus.conf.
 
-Edit nimbus.ini to your liking:
+Edit nimbus.conf to your liking:
 
     [default]
     site_title = Your Site Name
@@ -31,6 +31,14 @@ Edit nimbus.ini to your liking:
     about = /about.html
     github = http://github.com/pscohn
     email = mailto:pscohn@gmail.com
+
+###Start a New Project:
+
+Use
+
+```python nimbus.py init```
+
+to create a new nimbus.conf to fill out and start a new project.
 
 ###Creating Posts:
 
