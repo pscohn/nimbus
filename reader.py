@@ -48,12 +48,3 @@ def read_pages(path):
         title, body = parse_content(post)
         post_objects.append(Page(title, body, path))
     return post_objects
-
-def read_index(pages_path):
-    name = 'index.md'
-    post = open('%s/' % pages_path + name).read()
-    split = post.split('\n')
-    title = split[0].strip()
-    body = markdown.markdown('\n'.join(split[1:]).strip())
-    path = 'index.html'
-    return Page(title, body, path)

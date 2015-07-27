@@ -12,7 +12,7 @@ import utils
 
 import configparser
 config = configparser.ConfigParser()
-config.read(os.path.join(os.getcwd(), 'nimbus.ini'))
+config.read(os.path.join(os.getcwd(), 'nimbus.conf'))
 
 def generate_feed(posts):
     author = {'name': config['default']['author'], 'email': config['default']['email']}
@@ -66,22 +66,23 @@ def generate_pages(pages, posts):
         print(html, file=f)
         f.close()
 
-def generate_index(pages, posts, index):
+def generate_index(pages, posts):
     template = env.get_template('index.html')
     paginate = int(config['default']['paginate_by'])
     max_pages = math.ceil(len(posts) / paginate)
     for i in range(0, max_pages):
         
-        html = template.render({'page': index, 
+        html = template.render({
                                 'pages': pages,
                                 'posts': posts[i*paginate:(i+1)*paginate],
                                 'menu': config['menu'],
                                 'site_title': config['default']['site_title'],
                                 'index': i+1, 
-                                'max_pages': max_pages
+                                'max_pages': max_pages,
+                                'domain': config['default']['domain'],
                               })
         if i == 0:
-            target = os.path.join(config['default']['site_path'], index.path)
+            target = os.path.join(config['default']['site_path'], 'index.html')
         else:
             target = os.path.join(config['default']['site_path'], 'index_%s.html' % str(i + 1))
         if os.path.exists(target):
@@ -93,10 +94,9 @@ def generate_index(pages, posts, index):
 def generate():
     posts = reader.read_posts(config['default']['posts_path'])[::-1]
     pages = reader.read_pages(config['default']['pages_path'])
-    index = reader.read_index(config['default']['pages_path'])
     generate_posts(posts, pages)
     generate_pages(pages, posts)
-    generate_index(pages, posts, index)
+    generate_index(pages, posts)
     generate_feed(posts)
     utils.printnum(len(posts), 'post')
     utils.printnum(len(pages), 'page')
