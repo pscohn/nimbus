@@ -1,11 +1,10 @@
 import os
+import sys
 import datetime
 
 import markdown
 
 from models import *
-
-import sys
 
 def read(folder):
     filenames = []
