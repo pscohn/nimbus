@@ -1,7 +1,18 @@
 import unittest
 import datetime
+import random
+import shutil
+import os
 
 import models
+
+class ReaderTests(unittest.TestCase):
+    def setUp(self):
+        self.dirname = 'nimbustest-' + str(random.randrange(1000, 10000000))
+        os.mkdir(self.dirname)
+
+    def test_read(self):
+        shutil.rmtree(self.dirname)
 
 class ModelTests(unittest.TestCase):
     def test_page(self):
