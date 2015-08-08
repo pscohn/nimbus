@@ -92,8 +92,8 @@ def generate_index(pages, posts):
         f.close()
 
 def generate():
-    posts = reader.read_posts(config['default']['posts_path'])[::-1]
-    pages = reader.read_pages(config['default']['pages_path'])
+    posts = reader.read_files(config['default']['posts_path'], 'post')
+    pages = reader.read_files(config['default']['pages_path'], 'page')
     generate_posts(posts, pages)
     generate_pages(pages, posts)
     generate_index(pages, posts)
