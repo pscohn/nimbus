@@ -6,13 +6,17 @@ import markdown
 
 from models import *
 
-def read(folder):
+def _read(folder):
     filenames = []
     contents = []
     for filename in os.listdir(folder):
+        if len(filename) < 4:
+            continue
+
         if filename[0] != '.' and filename[-3:] == '.md' and filename != 'index.md':
             filenames.append(filename)
             contents.append(open('%s/' % folder + filename).read())
+
     return filenames, contents
 
 def parse_filename(filename):
@@ -29,7 +33,7 @@ def parse_content(content):
     return title, body
 
 def read_posts(path):
-    postnames, posts = read(path)
+    postnames, posts = _read(path)
 
     post_objects = []
     for i, post in enumerate(posts):
@@ -39,11 +43,11 @@ def read_posts(path):
     return post_objects
 
 def read_pages(path):
-    postnames, posts = read(path)
+    pagenames, pages = _read(path)
 
-    post_objects = []
-    for i, post in enumerate(posts):
-        path = postnames[i][:-3] + '.html'
-        title, body = parse_content(post)
-        post_objects.append(Page(title, body, path))
-    return post_objects
+    page_objects = []
+    for i, post in enumerate(pages):
+        path = pagenames[i][:-3] + '.html'
+        title, body = parse_content(page)
+        page_objects.append(Page(title, body, path))
+    return page_objects
