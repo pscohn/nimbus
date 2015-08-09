@@ -49,19 +49,25 @@ class ReaderTests(unittest.TestCase):
         posts = reader.read_files(os.path.join(self.dirname, 'posts'), 'post')
         pages = reader.read_files(os.path.join(self.dirname, 'pages'), 'page')
         self.assertEqual(posts[0].title, 'Post Title 2')
+        self.assertEqual(pages[0].title, 'About me')
 
     def tearDown(self):
         teardown(self.dirname)
 
 class ModelTests(unittest.TestCase):
-    def test_page(self):
-        pass
-        #p = models.Page()
+    def setUp(self):
+        self.dirname = setup_files()
+        self.posts = reader.read_files(os.path.join(self.dirname, 'posts'), 'post')
+        self.pages = reader.read_files(os.path.join(self.dirname, 'pages'), 'page')
 
-    def test_post(self):
-        pass
-        #p = models.Post()
-        #self.assertEqual(p.get_pretty_date(), 'July 01, 2015')
+    def test_post_pretty_date(self):
+        self.assertEqual(self.posts[1].get_pretty_date(), 'July 01, 2015')
+
+    def test_post_parse_filename(self):
+        self.assertEqual(self.posts[1].slug, 'test-post')
+
+    def tearDown(self):
+        teardown(self.dirname)
 
 if __name__ == '__main__':
     unittest.main()
