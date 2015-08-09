@@ -34,7 +34,7 @@ class Post(StaticFile):
 
     def _parse_filename(self):
         split = self._filename.split('-')
-        self.slug = '-'.join(split[3:])[:-3] # strip .html from end
+        self.slug = '-'.join(split[3:])[:-3] # strip .md from end
 
         year, month, day = split[:3]
         self.date = datetime.date(int(year), int(month), int(day))
@@ -48,7 +48,3 @@ class Page(StaticFile):
 
     def _parse_filename(self):
         self.path = self._filename[:-3] + '.html' # replace .md with .html
-
-
-
-

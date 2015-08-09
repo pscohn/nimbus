@@ -9,6 +9,7 @@ import reader
 
 exampleposts = [
     ('2015-07-01-test-post.md', 'Post Title\n\nPostBody'),
+    ('2015-07-02-second-post.md', 'Post Title 2\n\nPostBody 2'),
 ]
 
 examplepages = [
@@ -31,8 +32,7 @@ def setup_files():
     return dirname
 
 def teardown(dirname):
-    pass
-    #shutil.rmtree(dirname)
+    shutil.rmtree(dirname)
 
 class ReaderTests(unittest.TestCase):
     def setUp(self):
@@ -43,6 +43,12 @@ class ReaderTests(unittest.TestCase):
         filenames, filebodys = reader._read(folder)
         self.assertEqual(len(exampleposts), len(filenames))
         self.assertEqual(filenames[0], exampleposts[0][0])
+        self.assertEqual(filebodys[0], exampleposts[0][1])
+
+    def test_read_files(self):
+        posts = reader.read_files(os.path.join(self.dirname, 'posts'), 'post')
+        pages = reader.read_files(os.path.join(self.dirname, 'pages'), 'page')
+        self.assertEqual(posts[0].title, 'Post Title 2')
 
     def tearDown(self):
         teardown(self.dirname)

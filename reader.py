@@ -23,10 +23,10 @@ def read_files(path, filetype):
     if filetype == 'post':
         for i, filebody in enumerate(filebodys):
             file_objects.append(Post(filenames[i], filebody))
-            return file_objects[::-1] # return posts in reverse order
+        return file_objects[::-1] # return posts in reverse order
 
     elif filetype == 'page':
         for i, filebody in enumerate(filebodys):
-            file_objects.append(Post(filenames[i], filebody))
-            return file_objects
+            file_objects.append(Page(filenames[i], filebody))
+        return file_objects
 
