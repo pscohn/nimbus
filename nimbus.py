@@ -141,9 +141,11 @@ def main():
         generate()
 
     if sys.argv[1] == 'run':
+        port = 8080
         os.chdir(config['default']['site_path'])
         handler = http.server.SimpleHTTPRequestHandler
-        httpd = socketserver.TCPServer(("", 8080), handler)
+        httpd = socketserver.TCPServer(("", port), handler)
+        print('running on localhost:%s' % port)
         httpd.serve_forever()
 
 if __name__ == '__main__':
