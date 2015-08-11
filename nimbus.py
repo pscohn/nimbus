@@ -2,6 +2,7 @@
 import os
 import sys
 import math
+import shutil
 from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
@@ -68,35 +69,58 @@ def generate_pages(pages, posts):
 
 def generate_index(pages, posts):
     template = env.get_template('index.html')
-    paginate = int(config['default']['paginate_by'])
-    max_pages = math.ceil(len(posts) / paginate)
-    for i in range(0, max_pages):
+    paginate_by = int(config['default']['paginate_by'])
+    paginator = Paginator('index', posts, paginate_by)
+    for page in paginator.pages():
         
         html = template.render({
                                 'pages': pages,
-                                'posts': posts[i*paginate:(i+1)*paginate],
+                                'paginator': paginator,
                                 'menu': config['menu'],
                                 'site_title': config['default']['site_title'],
-                                'index': i+1, 
-                                'max_pages': max_pages,
                                 'domain': config['default']['domain'],
                               })
-        if i == 0:
-            target = os.path.join(config['default']['site_path'], 'index.html')
-        else:
-            target = os.path.join(config['default']['site_path'], 'index_%s.html' % str(i + 1))
+        target = os.path.join(config['default']['site_path'], paginator.current_page())
         if os.path.exists(target):
             os.remove(target)
         f = open(target, 'w')
         print(html, file=f)
         f.close()
 
+def generate_categories(pages, posts):
+    target = os.path.join(config['default']['site_path'], 'category')
+    if not os.path.exists(target):
+        os.mkdir(target)
+
+    template = env.get_template('index.html')
+    paginate_by = int(config['default']['paginate_by'])
+    for category in CATEGORIES:
+        paginator = Paginator('category/' + category, CATEGORIES[category], paginate_by)
+        for page in paginator.pages():
+
+            html = template.render({
+                                    'pages': pages,
+                                    'paginator': paginator,
+                                    'category': category,
+                                    'menu': config['menu'],
+                                    'site_title': config['default']['site_title'],
+                                    'domain': config['default']['domain'],
+                                })
+            target = os.path.join(config['default']['site_path'], paginator.current_page())
+            if os.path.exists(target):
+                os.remove(target)
+            f = open(target, 'w')
+            print(html, file=f)
+            f.close()
+
 def generate():
+    shutil.rmtree(config['default']['site_path'])
     posts = reader.read_files(config['default']['posts_path'], 'post')
     pages = reader.read_files(config['default']['pages_path'], 'page')
     generate_posts(posts, pages)
     generate_pages(pages, posts)
     generate_index(pages, posts)
+    generate_categories(pages, posts)
     generate_feed(posts)
     utils.printnum(len(posts), 'post')
     utils.printnum(len(pages), 'page')

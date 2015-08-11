@@ -34,6 +34,9 @@ def setup_files():
 def teardown(dirname):
     shutil.rmtree(dirname)
 
+class PaginationTests(unittest.TestCase):
+    pass
+
 class ReaderTests(unittest.TestCase):
     def setUp(self):
         self.dirname = setup_files()

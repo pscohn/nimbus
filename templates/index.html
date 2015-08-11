@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
 {% block title %}Home - {{ domain }}{% endblock %}
 {% block content %}
+{% if category %}
+    <h2>Category: {{ category }}</h2>
+{% endif %}
 <div class="post-links">
-{% for post in posts %}
+{% for post in paginator.page() %}
     <h3><a href="/posts/{{ post.slug }}.html">{{ post.title }}</a></h3>
     <div class="date">{{ post.get_pretty_date() }}</div>
 {% endfor %}
 </div>
 <div class="pagination">
-    {% if index == 1 and max_pages > 1 %}
-        <a href="/index_2.html">Next</a>
-    {% elif index == 2 %}
-        <a href="/">Previous</a>
-        {% if max_pages > 2 %}
-            <a href="/index_3.html">Next</a>
-        {% endif %}
-    {% elif index < max_pages %}
-        <a href="/index_{{ index - 1}}.html">Previous</a> &middot; 
-        <a href="/index_{{ index + 1}}.html">Next</a>
-    {% elif index > 1 %}
-        <a href="/index_{{ index - 1}}.html">Previous</a>
+    {% if paginator.has_previous() %}
+        <a href="/{{ paginator.previous_page() }}">Previous</a>
+    {% endif %}
+    {% if paginator.has_previous() and paginator.has_next() %}
+        &middot;
+    {% endif %}
+    {% if paginator.has_next() %}
+        <a href="/{{ paginator.next_page() }}">Next</a>
     {% endif %}
 </div>
 {% endblock %}

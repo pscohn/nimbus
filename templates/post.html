@@ -6,4 +6,9 @@
 <div class="post-body">
 {{ post.body }}
 </div>
+{% if post.categories != None %}
+    <span class="categories"> Filed under:
+        {% for c in post.categories %}{% if loop.index > 1 %}, {% endif %}<a href="/category/{{ c }}.html">{{ c }}</a>{% endfor %}
+    </span>
+{% endif %}
 {% endblock %}
